@@ -72,62 +72,7 @@
   <section class="dashboard">
     <div class="card">
       <h3>Current Staff Assignments</h3>
-      <div class="assignment-row">
-        <strong>Floor Coordinator:</strong> Ron Robinson
-      </div>
-      <div class="assignment-row">
-        <strong>Duty Supervisor:</strong> Chrostek<br />
-        <strong></strong>Jose Rivas
-      </div>
-      <div class="assignment-row">
-        <strong>AOC (AOS II or Above):</strong> Dusan Colic
-      </div>
-      <div class="assignment-row">
-        <strong>NOTAMs:</strong> Andrew Cleaver
-      </div>
-      <div class="assignment-row">
-        <strong>North Side Coordinator:</strong> Robert Perez
-      </div>
-      <div class="assignment-row">
-        <strong>South Side Coordinator:</strong> Angelo Goduto
-      </div>
-      <div class="assignment-row">
-        <strong>Zone 1 (North) Inspection:</strong> Mike Tyiran <em>Vehicle: C-71</em>
-      </div>
-      <div class="assignment-row">
-        <strong>Zone 2 Inspection:</strong> Ensweiler <em>Vehicle: C-73</em>
-      </div>
-      <div class="assignment-row">
-        <strong>Zone 3 (South) Inspection:</strong> Mishawn Hereford <em>Vehicle: C-75</em>
-      </div>
-      <div class="assignment-row">
-        <strong>NEST - North:</strong> Mike Nordstrom<br />
-        <strong></strong>Daniel Yaqub
-      </div>
-      <div class="assignment-row">
-        <strong>NEST - South:</strong> Brandon Pavur
-      </div>
-      <div class="assignment-row">
-        <strong>Snow AOS - North:</strong> Nayeli Barajas <em>Vehicle: C-81</em><br />
-        <strong></strong>William Graham <em>Vehicle: C-82</em><br />
-        <strong></strong>Jonathan Gieowarsingh <em>Vehicle: C-83</em>
-      </div>
-      <div class="assignment-row">
-        <strong>Snow AOS - South:</strong> Paul Harast <em>Vehicle: C-84</em><br />
-        <strong></strong>Pablo Carillo Botello <em>Vehicle: C-85</em><br />
-        <strong></strong>Antonio Mathews <em>Vehicle: C-86</em><br />
-        <strong></strong>Tyreke Williams <em>Vehicle: C-87</em><br />
-        <strong></strong>Jeffrey Bondy <em>Vehicle: C-88</em>
-      </div>
-      <div class="assignment-row">
-        <strong>Core Teams AOS:</strong> Ahmad Hussein <em>Vehicle: C-89</em><br />
-        <strong></strong>Michael Bacha <em>Vehicle: C-90</em>
-      </div>
-      <div class="assignment-row">
-        <strong>Snow Contractors:</strong> Juan Anaya <em>Vehicle: C-91</em><br />
-        <strong></strong>Jose Padilla <em>Vehicle: C-92</em><br />
-        <strong></strong>Joe Jablanovec <em>Vehicle: C-93</em>
-      </div>
+      <div id="assignmentDisplay"></div>
     </div>
 
     <div class="card">
@@ -147,5 +92,20 @@
       <div class="assignment-row"><strong>Misc Text Entry:</strong> —</div>
     </div>
   </section>
+
+  <script>
+    const assignments = JSON.parse(localStorage.getItem('ohareAssignments')) || [];
+    const container = document.getElementById('assignmentDisplay');
+    if (assignments.length > 0) {
+      assignments.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'assignment-row';
+        div.innerHTML = `<strong>${item.role}:</strong> ${item.name}${item.vehicle ? ` <em>Vehicle: ${item.vehicle}</em>` : ''}`;
+        container.appendChild(div);
+      });
+    } else {
+      container.innerHTML = '<div class="assignment-row">No assignments available. Visit <a href="admin.html" style="color:#67e8f9;">Admin Page</a> to add data.</div>';
+    }
+  </script>
 </body>
 </html>
