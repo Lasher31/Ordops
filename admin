@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Assignment Input</title>
+  <style>
+    body {
+      background-color: #0f172a;
+      color: white;
+      font-family: Arial, sans-serif;
+      padding: 2rem;
+    }
+    h1 {
+      color: #67e8f9;
+    }
+    label {
+      display: block;
+      margin: 1rem 0 0.5rem;
+    }
+    select, input[type="text"] {
+      width: 100%;
+      padding: 0.5rem;
+      border-radius: 5px;
+      border: none;
+      margin-bottom: 1rem;
+    }
+    button {
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 5px;
+      background-color: #0891b2;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .form-section {
+      background-color: #1e293b;
+      padding: 1rem;
+      border-radius: 10px;
+      margin-bottom: 2rem;
+    }
+  </style>
+</head>
+<body>
+  <h1>Admin Assignment Input</h1>
+
+  <div class="form-section">
+    <label for="assignment-role">Assignment Role</label>
+    <select id="assignment-role">
+      <option>Floor Coordinator</option>
+      <option>Duty Supervisor</option>
+      <option>AOC</option>
+      <option>NOTAMs</option>
+      <option>Zone 1 Inspection</option>
+      <option>Zone 2 Inspection</option>
+      <option>Zone 3 Inspection</option>
+      <option>NEST - North</option>
+      <option>NEST - South</option>
+      <option>Snow AOS - North</option>
+      <option>Snow AOS - South</option>
+      <option>Core Teams AOS</option>
+      <option>Snow Contractors</option>
+    </select>
+
+    <label for="staff-name">Staff Name</label>
+    <input type="text" id="staff-name" placeholder="Enter staff name" />
+
+    <label for="vehicle">Vehicle Call-Sign (Optional)</label>
+    <input type="text" id="vehicle" placeholder="e.g., C-35" />
+
+    <button onclick="saveAssignment()">Save Assignment</button>
+  </div>
+
+  <script>
+    function saveAssignment() {
+      const role = document.getElementById("assignment-role").value;
+      const name = document.getElementById("staff-name").value;
+      const vehicle = document.getElementById("vehicle").value;
+      const output = `${role}: ${name}${vehicle ? ' (Vehicle: ' + vehicle + ')' : ''}`;
+      alert("Saved: " + output);
+    }
+  </script>
+</body>
+</html>
