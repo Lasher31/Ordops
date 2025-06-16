@@ -26,19 +26,29 @@
       margin-bottom: 1rem;
     }
     button {
-      padding: 0.75rem 1.5rem;
+      padding: 0.5rem 1rem;
       border: none;
       border-radius: 5px;
       background-color: #0891b2;
       color: white;
       font-weight: bold;
       cursor: pointer;
+      margin-right: 0.5rem;
     }
     .form-section {
       background-color: #1e293b;
       padding: 1rem;
       border-radius: 10px;
       margin-bottom: 2rem;
+    }
+    .assignment-row {
+      background-color: #1e293b;
+      padding: 0.5rem;
+      border-radius: 5px;
+      margin-bottom: 0.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
   </style>
 </head>
@@ -72,18 +82,52 @@
     <button onclick="saveAssignment()">Save Assignment</button>
   </div>
 
+  <div>
+    <h2>Current Assignments</h2>
+    <div id="assignmentList"></div>
+  </div>
+
   <script>
+    function loadAssignments() {
+      const list = document.getElementById("assignmentList");
+      list.innerHTML = "";
+      const assignments = JSON.parse(localStorage.getItem("ohareAssignments")) || [];
+
+      assignments.forEach((item, index) => {
+        const row = document.createElement("div");
+        row.className = "assignment-row";
+        row.innerHTML = `<span>${item.role}: ${item.name}${item.vehicle ? ' (Vehicle: ' + item.vehicle + ')' : ''}</span>
+          <button onclick="removeAssignment(${index})">Remove</button>`;
+        list.appendChild(row);
+      });
+    }
+
     function saveAssignment() {
       const role = document.getElementById("assignment-role").value;
       const name = document.getElementById("staff-name").value;
       const vehicle = document.getElementById("vehicle").value;
+      if (!name.trim()) {
+        alert("Staff name is required.");
+        return;
+      }
 
       const newAssignment = { role, name, vehicle };
       const stored = JSON.parse(localStorage.getItem("ohareAssignments")) || [];
       stored.push(newAssignment);
       localStorage.setItem("ohareAssignments", JSON.stringify(stored));
-      alert("Assignment saved.");
+      document.getElementById("staff-name").value = "";
+      document.getElementById("vehicle").value = "";
+      loadAssignments();
     }
+
+    function removeAssignment(index) {
+      const stored = JSON.parse(localStorage.getItem("ohareAssignments")) || [];
+      stored.splice(index, 1);
+      localStorage.setItem("ohareAssignments", JSON.stringify(stored));
+      loadAssignments();
+    }
+
+    window.onload = loadAssignments;
   </script>
 </body>
 </html>
