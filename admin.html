@@ -1,110 +1,88 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>O'Hare Airport Operations Dashboard</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Assignment Input</title>
   <style>
     body {
-      margin: 0;
-      font-family: Arial, sans-serif;
       background-color: #0f172a;
       color: white;
+      font-family: Arial, sans-serif;
+      padding: 2rem;
     }
-    header {
-      background-color: #0891b2;
-      text-align: center;
-      padding: 1rem;
-      font-size: 1.5rem;
-      font-weight: bold;
-    }
-    .dashboard {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
-      padding: 1rem;
-    }
-    .card {
-      background-color: #1e293b;
-      border-radius: 0.5rem;
-      padding: 1rem;
-      flex: 1 1 48%;
-      min-width: 300px;
-    }
-    .card h3 {
-      border-bottom: 1px solid #475569;
-      padding-bottom: 0.5rem;
-      margin-bottom: 0.5rem;
-      font-size: 1.1rem;
+    h1 {
       color: #67e8f9;
     }
-    .assignment-row {
-      border-bottom: 1px solid #334155;
-      padding-bottom: 0.5rem;
+    label {
+      display: block;
+      margin: 1rem 0 0.5rem;
+    }
+    select, input[type="text"] {
+      width: 100%;
+      padding: 0.5rem;
+      border-radius: 5px;
+      border: none;
       margin-bottom: 1rem;
     }
-    .assignment-row strong {
-      display: inline-block;
-      width: 250px;
+    button {
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 5px;
+      background-color: #0891b2;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
     }
-    .status-open {
-      color: #22c55e;
-    }
-    .status-closed {
-      color: #ef4444;
-    }
-    .timestamp {
-      font-size: 0.9rem;
-      color: #94a3b8;
-      margin-top: 0.25rem;
-      display: block;
-    }
-    em {
-      display: block;
-      margin-left: 250px;
-      color: #94a3b8;
+    .form-section {
+      background-color: #1e293b;
+      padding: 1rem;
+      border-radius: 10px;
+      margin-bottom: 2rem;
     }
   </style>
 </head>
 <body>
-  <header>O'Hare International Airport - Test Dashboard</header>
+  <h1>Admin Assignment Input</h1>
 
-  <section class="dashboard">
-    <div class="card">
-      <h3>Current Staff Assignments</h3>
-      <div id="assignmentDisplay"></div>
-    </div>
+  <div class="form-section">
+    <label for="assignment-role">Assignment Role</label>
+    <select id="assignment-role">
+      <option>Floor Coordinator</option>
+      <option>Duty Supervisor</option>
+      <option>AOC</option>
+      <option>NOTAMs</option>
+      <option>Zone 1 Inspection</option>
+      <option>Zone 2 Inspection</option>
+      <option>Zone 3 Inspection</option>
+      <option>NEST - North</option>
+      <option>NEST - South</option>
+      <option>Snow AOS - North</option>
+      <option>Snow AOS - South</option>
+      <option>Core Teams AOS</option>
+      <option>Snow Contractors</option>
+    </select>
 
-    <div class="card">
-      <h3>Runway Status</h3>
-      <div class="assignment-row"><strong>10L/28R:</strong> <span class="status-open">Open</span> | RCC: 5/5/5 <span class="timestamp">06/16/2025 08:00</span></div>
-      <div class="assignment-row"><strong>10C/28C:</strong> <span class="status-open">Open</span> | RCC: 5/5/5 <span class="timestamp">06/16/2025 08:00</span></div>
-      <div class="assignment-row"><strong>10R/28L:</strong> <span class="status-open">Open</span> | RCC: 5/5/5 <span class="timestamp">06/16/2025 08:00</span></div>
-      <div class="assignment-row"><strong>9L/27R:</strong> <span class="status-open">Open</span> | RCC: 5/5/5 <span class="timestamp">06/16/2025 08:00</span></div>
-      <div class="assignment-row"><strong>9C/27C:</strong> <span class="status-open">Open</span> | RCC: 5/5/5 <span class="timestamp">06/16/2025 08:00</span></div>
-      <div class="assignment-row"><strong>9R/27L:</strong> <span class="status-open">Open</span> | RCC: 5/5/5 <span class="timestamp">06/16/2025 08:00</span></div>
-      <div class="assignment-row"><strong>4L/22R:</strong> <span class="status-open">Open</span> | RCC: 5/5/5 <span class="timestamp">06/16/2025 08:00</span></div>
-      <div class="assignment-row"><strong>4R/22L:</strong> <span class="status-open">Open</span> | RCC: 5/5/5 <span class="timestamp">06/16/2025 08:00</span></div>
-    </div>
+    <label for="staff-name">Staff Name</label>
+    <input type="text" id="staff-name" placeholder="Enter staff name" />
 
-    <div class="card">
-      <h3>Other Assignments</h3>
-      <div class="assignment-row"><strong>Misc Text Entry:</strong> —</div>
-    </div>
-  </section>
+    <label for="vehicle">Vehicle Call-Sign (Optional)</label>
+    <input type="text" id="vehicle" placeholder="e.g., C-35" />
+
+    <button onclick="saveAssignment()">Save Assignment</button>
+  </div>
 
   <script>
-    const assignments = JSON.parse(localStorage.getItem('ohareAssignments')) || [];
-    const container = document.getElementById('assignmentDisplay');
-    if (assignments.length > 0) {
-      assignments.forEach(item => {
-        const div = document.createElement('div');
-        div.className = 'assignment-row';
-        div.innerHTML = `<strong>${item.role}:</strong> ${item.name}${item.vehicle ? ` <em>Vehicle: ${item.vehicle}</em>` : ''}`;
-        container.appendChild(div);
-      });
-    } else {
-      container.innerHTML = '<div class="assignment-row">No assignments available. Visit <a href="admin.html" style="color:#67e8f9;">Admin Page</a> to add data.</div>';
+    function saveAssignment() {
+      const role = document.getElementById("assignment-role").value;
+      const name = document.getElementById("staff-name").value;
+      const vehicle = document.getElementById("vehicle").value;
+
+      const newAssignment = { role, name, vehicle };
+      const stored = JSON.parse(localStorage.getItem("ohareAssignments")) || [];
+      stored.push(newAssignment);
+      localStorage.setItem("ohareAssignments", JSON.stringify(stored));
+      alert("Assignment saved.");
     }
   </script>
 </body>
