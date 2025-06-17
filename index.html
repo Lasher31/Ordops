@@ -47,13 +47,13 @@
   <h1>O'Hare International Airport - Test Dashboard <span id="clock" style="font-size: 0.6em; color: #a5f3fc; margin-left: 1rem;"></span></h1>
 
   <div class="form-section">
-    <h2>Staff Assignments <span id="staffCount" style="font-size: 0.8em; color: #a5f3fc;"></span></h2>
-    <div id="assignmentList"></div>
+    <h2 onclick="toggleSection('assignmentList')" style="cursor:pointer;">Staff Assignments <span id="staffCount" style="font-size: 0.8em; color: #a5f3fc;"></span></h2>
+    <div id="assignmentList" style="display: none;"></div>
   </div>
 
   <div class="form-section">
-    <h2>Runway Status Overview <span id="runwayStatusCount" style="font-size: 0.8em; color: #a5f3fc;"></span></h2>
-    <div id="dashboardRunwayStatus"></div>
+    <h2 onclick="toggleSection('dashboardRunwayStatus')" style="cursor:pointer;">Runway Status Overview <span id="runwayStatusCount" style="font-size: 0.8em; color: #a5f3fc;"></span></h2>
+    <div id="dashboardRunwayStatus" style="display: none;"></div>
   </div>
 
   <script>
@@ -119,6 +119,14 @@
 }
 setInterval(updateClock, 1000);
 updateClock();
+function toggleSection(id) {
+  const section = document.getElementById(id);
+  if (section.style.display === "none") {
+    section.style.display = "block";
+  } else {
+    section.style.display = "none";
+  }
+}
 </script>
 </body>
 </html>
