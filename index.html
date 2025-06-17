@@ -86,12 +86,11 @@
         if (data) {
           const div = document.createElement("div");
           div.className = "assignment-row";
-          div.innerHTML = `<strong>${runway}</strong><br>
+          div.innerHTML = `<strong>${runway}</strong> <span style='font-size: 0.8em; color: #a5f3fc;'>(${data.timestamp || 'N/A'})</span><br>
             Status: <span style='color: ${data.closed === "Closed" ? "#f87171" : data.closed === "Open" ? "#34d399" : "white"}'>${data.closed || 'N/A'}</span><br>
-            RCC: ${data.rcc || 'N/A'}<br>
             Condition: ${data.condition || 'N/A'}<br>
-            Status: <span style='color: ${data.closed === "Closed" ? "#f87171" : data.closed === "Open" ? "#34d399" : "white"}'>${data.closed || 'N/A'}</span><br>
-            Updated: ${data.timestamp || 'N/A'}`;
+            RCC: ${data.rcc || 'N/A'}<br>
+            `;
           container.appendChild(div);
           if (data.closed === "Open") openCount++;
           else if (data.closed === "Closed") closedCount++;
