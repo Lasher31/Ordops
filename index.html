@@ -44,7 +44,7 @@
     <a href="admin.html">Go to Admin Page</a>
   </nav>
 
-  <h1>O'Hare International Airport - Test Dashboard</h1>
+  <h1>O'Hare International Airport - Test Dashboard <span id="clock" style="font-size: 0.6em; color: #a5f3fc; margin-left: 1rem;"></span></h1>
 
   <div class="form-section">
     <h2>Staff Assignments</h2>
@@ -110,6 +110,13 @@
       });
       if (countDisplay) countDisplay.textContent = `(Open: ${open} / Closed: ${closed})`;
     };
-  </script>
+  function updateClock() {
+  const clock = document.getElementById("clock");
+  const now = new Date();
+  clock.textContent = now.toLocaleString();
+}
+setInterval(updateClock, 1000);
+updateClock();
+</script>
 </body>
 </html>
