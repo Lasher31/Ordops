@@ -86,7 +86,7 @@
           div.innerHTML = `<strong>${runway}</strong><br>
             RCC: ${data.rcc || 'N/A'}<br>
             Condition: ${data.condition || 'N/A'}<br>
-            Closure: ${data.closed || 'N/A'}<br>
+            Status: <span style='color: ${data.closed === "Closed" ? "#f87171" : data.closed === "Open" ? "#34d399" : "white"}'>${data.closed || 'N/A'}</span><br>
             Updated: ${data.timestamp || 'N/A'}`;
           container.appendChild(div);
         }
@@ -100,4 +100,3 @@
   </script>
 </body>
 </html>
-
