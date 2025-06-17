@@ -67,6 +67,7 @@
 <body>
   <nav>
     <a href="index.html">Return to Dashboard</a>
+    <a href="index_dashboard_combined.html">View Read-Only Dashboard</a>
   </nav>
 
   <h1>Admin Assignment Input</h1>
@@ -206,9 +207,36 @@
     }
 
     window.onload = function() {
-      loadAssignments();
-      loadRunwayStatusInputs();
-    };
+  loadAssignments();
+  loadRunwayStatusInputs();
+  displayRunwayStatusOnDashboard();
+};
   </script>
+<div class="form-section">
+  <h2>Runway Status Overview</h2>
+  <div id="dashboardRunwayStatus"></div>
+</div>
+
+<script>
+function displayRunwayStatusOnDashboard() {
+  const container = document.getElementById("dashboardRunwayStatus");
+  const statuses = JSON.parse(localStorage.getItem("runwayStatus")) || {};
+  container.innerHTML = "";
+  runways.forEach(runway => {
+    const data = statuses[runway];
+    if (data) {
+      const div = document.createElement("div");
+      div.className = "assignment-row";
+      div.innerHTML = `<strong>${runway}</strong><br>
+        RCC: ${data.rcc || 'N/A'}<br>
+        Condition: ${data.condition || 'N/A'}<br>
+        Closure: ${data.closed || 'N/A'}<br>
+        Updated: ${data.timestamp || 'N/A'}`;
+      container.appendChild(div);
+    }
+  });
+}
+</script>
+
 </body>
 </html>
