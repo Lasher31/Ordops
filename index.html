@@ -125,24 +125,37 @@
     }
 
     window.onload = function() {
-  fetch('https://api.weather.gov/stations/KORD/observations/latest')
-    .then(response => response.json())
-    .then(data => {
-      const temp = data.properties.temperature.value;
-      if (temp !== null) {
-        const fahrenheit = (temp * 9/5 + 32).toFixed(1);
-        const windSpeedMps = data.properties.windSpeed.value;
-const windSpeedMph = (windSpeedMps * 2.23694).toFixed(1);
-const windSpeedKts = (windSpeedMps * 1.94384).toFixed(1);
-const visibility = data.properties.visibility.value ? (data.properties.visibility.value / 1609.34).toFixed(1) + ' sm' : 'N/A';
-document.getElementById('currentTemp').textContent = `(${fahrenheit}°F, Wind: ${data.properties.windDirection.value}° @ ${windSpeedMph} mph (${windSpeedKts} kts), Vis: ${visibility})`;
-      } else {
-        document.getElementById('currentTemp').textContent = '(N/A)';
-      }
-    })
-    .catch(() => {
-      document.getElementById('currentTemp').textContent = '(N/A)';
-    });
+fetch('https://api.weather.gov/stations/KORD/observations/latest')
+  .then(response => response.json())
+  .then(data => {
+    const temp = data.properties.temperature.value;
+    let windDir = data.properties.windDirection.value;
+    let windSpeedMps = data.properties.windSpeed.value;
+    let windSpeedMph = windSpeedMps ? (windSpeedMps * 2.23694).toFixed(1) : null;
+    let windSpeedKts = windSpeedMps ? (windSpeedMps * 1.94384).toFixed(1) : null;
+    const visibility = data.properties.visibility.value ? (data.properties.visibility.value / 1609.34).toFixed(1) + ' sm' : 'N/A';
+
+    if (temp !== null && windDir !== null && windSpeedMph !== null) {
+      const fahrenheit = (temp * 9/5 + 32).toFixed(1);
+      document.getElementById('currentTemp').textContent =
+        `(${fahrenheit}°F, Wind: ${windDir}° @ ${windSpeedMph} mph (${windSpeedKts} kts), Vis: ${visibility})`;
+    } else {
+      fetch('https://aviationweather.gov/adds/dataserver_current/httpparam?dataSource=metars&requestType=retrieve&format=xml&stationString=KORD&hoursBeforeNow=1&mostRecent=true')
+        .then(response => response.text())
+        .then(xmlText => {
+          const parser = new DOMParser();
+          const xml = parser.parseFromString(xmlText, "application/xml");
+          const metar = xml.querySelector("raw_text")?.textContent || "N/A";
+          document.getElementById('currentTemp').textContent = `(METAR fallback: ${metar})`;
+        })
+        .catch(() => {
+          document.getElementById('currentTemp').textContent = '(Weather data unavailable)';
+        });
+    }
+  })
+  .catch(() => {
+    document.getElementById('currentTemp').textContent = '(Weather data error)';
+  });
       const countDisplay = document.getElementById("runwayStatusCount");
       loadAssignments();
       displayRunwayStatusOnDashboard();
