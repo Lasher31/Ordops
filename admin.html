@@ -34,6 +34,7 @@
       font-weight: bold;
       cursor: pointer;
       margin-right: 0.5rem;
+      margin-top: 0.5rem;
     }
     .form-section {
       background-color: #1e293b;
@@ -79,7 +80,8 @@
     <label for="vehicle">Vehicle Call-Sign (Optional)</label>
     <input type="text" id="vehicle" placeholder="e.g., C-35" />
 
-    <button onclick="saveAssignment()">Save Assignment</button>
+    <button onclick="saveAssignmentAndRedirect()">Save & Return to Dashboard</button>
+    <button onclick="clearAllAssignments()">Clear All Assignments</button>
   </div>
 
   <div>
@@ -102,7 +104,7 @@
       });
     }
 
-    function saveAssignment() {
+    function saveAssignmentAndRedirect() {
       const role = document.getElementById("assignment-role").value;
       const name = document.getElementById("staff-name").value;
       const vehicle = document.getElementById("vehicle").value;
@@ -115,9 +117,7 @@
       const stored = JSON.parse(localStorage.getItem("ohareAssignments")) || [];
       stored.push(newAssignment);
       localStorage.setItem("ohareAssignments", JSON.stringify(stored));
-      document.getElementById("staff-name").value = "";
-      document.getElementById("vehicle").value = "";
-      loadAssignments();
+      window.location.href = "index.html";
     }
 
     function removeAssignment(index) {
@@ -125,6 +125,13 @@
       stored.splice(index, 1);
       localStorage.setItem("ohareAssignments", JSON.stringify(stored));
       loadAssignments();
+    }
+
+    function clearAllAssignments() {
+      if (confirm("Are you sure you want to clear all assignments?")) {
+        localStorage.removeItem("ohareAssignments");
+        loadAssignments();
+      }
     }
 
     window.onload = loadAssignments;
