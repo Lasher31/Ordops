@@ -52,7 +52,7 @@
   </div>
 
   <div class="form-section">
-    <h2>Runway Status Overview</h2>
+    <h2>Runway Status Overview <span id="runwayStatusCount" style="font-size: 0.8em; color: #a5f3fc;"></span></h2>
     <div id="dashboardRunwayStatus"></div>
   </div>
 
@@ -76,26 +76,40 @@
 
     function displayRunwayStatusOnDashboard() {
       const container = document.getElementById("dashboardRunwayStatus");
+      const countDisplay = document.getElementById("runwayStatusCount");
       const statuses = JSON.parse(localStorage.getItem("runwayStatus")) || {};
       container.innerHTML = "";
+      let openCount = 0;
+      let closedCount = 0;
       runways.forEach(runway => {
         const data = statuses[runway];
         if (data) {
           const div = document.createElement("div");
           div.className = "assignment-row";
           div.innerHTML = `<strong>${runway}</strong><br>
+            Status: <span style='color: ${data.closed === "Closed" ? "#f87171" : data.closed === "Open" ? "#34d399" : "white"}'>${data.closed || 'N/A'}</span><br>
             RCC: ${data.rcc || 'N/A'}<br>
             Condition: ${data.condition || 'N/A'}<br>
             Status: <span style='color: ${data.closed === "Closed" ? "#f87171" : data.closed === "Open" ? "#34d399" : "white"}'>${data.closed || 'N/A'}</span><br>
             Updated: ${data.timestamp || 'N/A'}`;
           container.appendChild(div);
+          if (data.closed === "Open") openCount++;
+          else if (data.closed === "Closed") closedCount++;
         }
       });
     }
 
     window.onload = function() {
+      const countDisplay = document.getElementById("runwayStatusCount");
       loadAssignments();
       displayRunwayStatusOnDashboard();
+      const statuses = JSON.parse(localStorage.getItem("runwayStatus")) || {};
+      let open = 0, closed = 0;
+      Object.values(statuses).forEach(data => {
+        if (data.closed === "Open") open++;
+        else if (data.closed === "Closed") closed++;
+      });
+      if (countDisplay) countDisplay.textContent = `(Open: ${open} / Closed: ${closed})`;
     };
   </script>
 </body>
