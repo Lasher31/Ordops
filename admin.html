@@ -37,9 +37,6 @@
       margin-bottom: 1rem;
     }
     button {
-      padding: 0.5rem 1rem;
-      border: none;
-      border-radius: 5px;
       background-color: #0891b2;
       color: white;
       font-weight: bold;
@@ -66,7 +63,6 @@
 </head>
 <body>
   <nav>
-    <a href="#" onclick="saveAssignment()">Save Assignment</a>
     <a href="index.html">Return to Dashboard</a>
   </nav>
 
@@ -96,7 +92,8 @@
     <label for="vehicle">Vehicle Call-Sign (Optional)</label>
     <input type="text" id="vehicle" placeholder="e.g., C-35" />
 
-    <button onclick="clearAllAssignments()">Clear All Assignments</button>
+    <button onclick="saveAssignment()">Save Assignment</button>
+    <button onclick="clearAllAssignments()" style="background-color: #dc2626;">Clear All Assignments</button>
   </div>
 
   <div>
