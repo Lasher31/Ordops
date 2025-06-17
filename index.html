@@ -1,125 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>O'Hare Airport Operations Dashboard</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background-color: #0f172a;
-      color: white;
-    }
-    header {
-      background-color: #0891b2;
-      text-align: center;
-      padding: 1rem;
-      font-size: 1.5rem;
-      font-weight: bold;
-    }
-    nav {
-      background-color: #1e293b;
-      padding: 0.5rem 1rem;
-      display: flex;
-      gap: 1rem;
-    }
-    nav a {
-      color: #67e8f9;
-      text-decoration: none;
-      font-weight: bold;
-    }
-    .dashboard {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
-      padding: 1rem;
-    }
-    .card {
-      background-color: #1e293b;
-      border-radius: 0.5rem;
-      padding: 1rem;
-      flex: 1 1 48%;
-      min-width: 300px;
-    }
-    .card h3 {
-      border-bottom: 1px solid #475569;
-      padding-bottom: 0.5rem;
-      margin-bottom: 0.5rem;
-      font-size: 1.1rem;
-      color: #67e8f9;
-    }
-    .assignment-row {
-      border-bottom: 1px solid #334155;
-      padding-bottom: 0.5rem;
-      margin-bottom: 1rem;
-    }
-    .assignment-row strong {
-      display: inline-block;
-      width: 250px;
-    }
-    .status-open {
-      color: #22c55e;
-    }
-    .status-closed {
-      color: #ef4444;
-    }
-    .timestamp {
-      font-size: 0.9rem;
-      color: #94a3b8;
-      margin-top: 0.25rem;
-      display: block;
-    }
-    em {
-      display: block;
-      margin-left: 250px;
-      color: #94a3b8;
-    }
-  </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>O'Hare International Airport - Test Dashboard</title>
 </head>
 <body>
-  <header>O'Hare International Airport - Test Dashboard</header>
-  <nav>
-    <a href="index.html">Dashboard</a>
-    <a href="admin.html">Admin Input Page</a>
-  </nav>
-  <section class="dashboard">
-    <div class="card">
-      <h3>Current Staff Assignments</h3>
-      <div id="assignmentDisplay"></div>
-    </div>
-
-    <div class="card">
-      <h3>Runway Status</h3>
-      <div class="assignment-row"><strong>10L/28R:</strong> <span class="status-open">Open</span> | RCC: 5/5/5 <span class="timestamp">06/16/2025 08:00</span></div>
-      <div class="assignment-row"><strong>10C/28C:</strong> <span class="status-open">Open</span> | RCC: 5/5/5 <span class="timestamp">06/16/2025 08:00</span></div>
-      <div class="assignment-row"><strong>10R/28L:</strong> <span class="status-open">Open</span> | RCC: 5/5/5 <span class="timestamp">06/16/2025 08:00</span></div>
-      <div class="assignment-row"><strong>9L/27R:</strong> <span class="status-open">Open</span> | RCC: 5/5/5 <span class="timestamp">06/16/2025 08:00</span></div>
-      <div class="assignment-row"><strong>9C/27C:</strong> <span class="status-open">Open</span> | RCC: 5/5/5 <span class="timestamp">06/16/2025 08:00</span></div>
-      <div class="assignment-row"><strong>9R/27L:</strong> <span class="status-open">Open</span> | RCC: 5/5/5 <span class="timestamp">06/16/2025 08:00</span></div>
-      <div class="assignment-row"><strong>4L/22R:</strong> <span class="status-open">Open</span> | RCC: 5/5/5 <span class="timestamp">06/16/2025 08:00</span></div>
-      <div class="assignment-row"><strong>4R/22L:</strong> <span class="status-open">Open</span> | RCC: 5/5/5 <span class="timestamp">06/16/2025 08:00</span></div>
-    </div>
-
-    <div class="card">
-      <h3>Other Assignments</h3>
-      <div class="assignment-row"><strong>Misc Text Entry:</strong> —</div>
-    </div>
-  </section>
+  <h1>O'Hare International Airport - Test Dashboard</h1>
+  <div class="form-section">
+    <h2>Runway Status Overview</h2>
+    <div id="dashboardRunwayStatus"></div>
+  </div>
 
   <script>
-    const assignments = JSON.parse(localStorage.getItem('ohareAssignments')) || [];
-    const container = document.getElementById('assignmentDisplay');
-    if (assignments.length > 0) {
-      assignments.forEach(item => {
-        const div = document.createElement('div');
-        div.className = 'assignment-row';
-        div.innerHTML = `<strong>${item.role}:</strong> ${item.name}${item.vehicle ? ` <em>Vehicle: ${item.vehicle}</em>` : ''}`;
-        container.appendChild(div);
+    const runways = [
+      "4L/22R", "4R/22L", "9L/27R", "9C/27C", "9R/27L",
+      "10L/28R", "10C/28C", "10R/28L"
+    ];
+
+    function displayRunwayStatusOnDashboard() {
+      const container = document.getElementById("dashboardRunwayStatus");
+      const statuses = JSON.parse(localStorage.getItem("runwayStatus")) || {};
+      container.innerHTML = "";
+      runways.forEach(runway => {
+        const data = statuses[runway];
+        if (data) {
+          const div = document.createElement("div");
+          div.className = "assignment-row";
+          div.innerHTML = `<strong>${runway}</strong><br>
+            RCC: ${data.rcc || 'N/A'}<br>
+            Condition: ${data.condition || 'N/A'}<br>
+            Closure: ${data.closed || 'N/A'}<br>
+            Updated: ${data.timestamp || 'N/A'}`;
+          container.appendChild(div);
+        }
       });
-    } else {
-      container.innerHTML = '<div class="assignment-row">No assignments available. Visit <a href="admin.html" style="color:#67e8f9;">Admin Page</a> to add data.</div>';
     }
+
+    window.onload = function() {
+      displayRunwayStatusOnDashboard();
+    };
   </script>
 </body>
 </html>
