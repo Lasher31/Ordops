@@ -1,12 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>O'Hare International Airport - Test Dashboard</title>
+  <style>
+    body {
+      background-color: #0f172a;
+      color: white;
+      font-family: Arial, sans-serif;
+      padding: 2rem;
+    }
+    h1 {
+      color: #67e8f9;
+    }
+    nav {
+      background-color: #1e293b;
+      padding: 0.5rem 1rem;
+      margin-bottom: 1.5rem;
+    }
+    nav a {
+      color: #67e8f9;
+      text-decoration: none;
+      margin-right: 1rem;
+      font-weight: bold;
+    }
+    .form-section {
+      background-color: #1e293b;
+      padding: 1rem;
+      border-radius: 10px;
+      margin-bottom: 2rem;
+    }
+    .assignment-row {
+      background-color: #1e293b;
+      padding: 0.5rem;
+      border-radius: 5px;
+      margin-bottom: 0.5rem;
+    }
+  </style>
 </head>
 <body>
+  <nav>
+    <a href="admin.html">Go to Admin Page</a>
+  </nav>
+
   <h1>O'Hare International Airport - Test Dashboard</h1>
+
+  <div class="form-section">
+    <h2>Staff Assignments</h2>
+    <div id="assignmentList"></div>
+  </div>
+
   <div class="form-section">
     <h2>Runway Status Overview</h2>
     <div id="dashboardRunwayStatus"></div>
@@ -17,6 +61,18 @@
       "4L/22R", "4R/22L", "9L/27R", "9C/27C", "9R/27L",
       "10L/28R", "10C/28C", "10R/28L"
     ];
+
+    function loadAssignments() {
+      const list = document.getElementById("assignmentList");
+      list.innerHTML = "";
+      const assignments = JSON.parse(localStorage.getItem("ohareAssignments")) || [];
+      assignments.forEach((item) => {
+        const row = document.createElement("div");
+        row.className = "assignment-row";
+        row.innerHTML = `<strong>${item.role}</strong>: ${item.name}${item.vehicle ? ' (Vehicle: ' + item.vehicle + ')' : ''}`;
+        list.appendChild(row);
+      });
+    }
 
     function displayRunwayStatusOnDashboard() {
       const container = document.getElementById("dashboardRunwayStatus");
@@ -38,6 +94,7 @@
     }
 
     window.onload = function() {
+      loadAssignments();
       displayRunwayStatusOnDashboard();
     };
   </script>
