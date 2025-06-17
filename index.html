@@ -67,7 +67,8 @@
       const countDisplay = document.getElementById("staffCount");
       list.innerHTML = "";
       const assignments = JSON.parse(localStorage.getItem("ohareAssignments")) || [];
-      if (countDisplay) countDisplay.textContent = `(Total: ${assignments.length})`;
+      const driverCount = localStorage.getItem("driverCount") || '0';
+      if (countDisplay) countDisplay.textContent = `(AOS: ${assignments.length}, Driver Count: ${driverCount})`;
       assignments.forEach((item) => {
         const row = document.createElement("div");
         row.className = "assignment-row";
