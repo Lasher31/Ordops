@@ -47,7 +47,7 @@
   <h1>O'Hare International Airport - Test Dashboard <span id="clock" style="font-size: 0.6em; color: #a5f3fc; margin-left: 1rem;"></span></h1>
 
   <div class="form-section">
-    <h2>Staff Assignments</h2>
+    <h2>Staff Assignments <span id="staffCount" style="font-size: 0.8em; color: #a5f3fc;"></span></h2>
     <div id="assignmentList"></div>
   </div>
 
@@ -64,8 +64,10 @@
 
     function loadAssignments() {
       const list = document.getElementById("assignmentList");
+      const countDisplay = document.getElementById("staffCount");
       list.innerHTML = "";
       const assignments = JSON.parse(localStorage.getItem("ohareAssignments")) || [];
+      if (countDisplay) countDisplay.textContent = `(Total: ${assignments.length})`;
       assignments.forEach((item) => {
         const row = document.createElement("div");
         row.className = "assignment-row";
