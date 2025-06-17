@@ -72,22 +72,32 @@
 
   <h1>Admin Assignment Input</h1>
 
-  <div class="form-section">
+  </div>
+
+<div class="form-section">
+    <label for="driver-count-box">Driver Count</label>
+    <input type="text" id="driver-count-box" placeholder="Enter driver count" />
+    <button onclick="saveDriverCount()">Save Driver Count</button>
+
     <label for="assignment-role">Assignment Role</label>
     <select id="assignment-role">
-      <option>Floor Coordinator</option>
-      <option>Duty Supervisor</option>
       <option>AOC</option>
+      <option>Console 1</option>
+      <option>Console 2</option>
+      <option>Console 3</option>
+      <option>Core Teams AOS</option>
+      <option>Duty Supervisor</option>
+      <option>Floor Coordinator</option>
+      <option>NEST - North</option>
+      <option>NEST - South</option>
       <option>NOTAMs</option>
+      <option>Other</option>
+      <option>Snow AOS - North</option>
+      <option>Snow AOS - South</option>
+      <option>Snow Contractors</option>
       <option>Zone 1 Inspection</option>
       <option>Zone 2 Inspection</option>
       <option>Zone 3 Inspection</option>
-      <option>NEST - North</option>
-      <option>NEST - South</option>
-      <option>Snow AOS - North</option>
-      <option>Snow AOS - South</option>
-      <option>Core Teams AOS</option>
-      <option>Snow Contractors</option>
     </select>
 
     <label for="staff-name">Staff Name</label>
@@ -96,13 +106,18 @@
     <label for="vehicle">Vehicle Call-Sign (Optional)</label>
     <input type="text" id="vehicle" placeholder="e.g., C-35" />
 
+    
+
     <button onclick="saveAssignment()">Save Assignment</button>
     <button onclick="clearAllAssignments()" style="background-color: #dc2626;">Clear All Assignments</button>
   </div>
 
+    
+
   <div>
     <h2>Current Assignments</h2>
     <div id="assignmentList"></div>
+<p><strong>Driver Count:</strong> <span id="driverCountDisplay">N/A</span></p>
   </div>
 
   <div class="form-section">
@@ -124,6 +139,8 @@
 
     function loadAssignments() {
       const list = document.getElementById("assignmentList");
+      const driverCount = localStorage.getItem("driverCount") || "N/A";
+      document.getElementById("driverCountDisplay").innerText = driverCount;
       list.innerHTML = "";
       const assignments = JSON.parse(localStorage.getItem("ohareAssignments")) || [];
 
@@ -140,11 +157,12 @@
       const role = document.getElementById("assignment-role").value;
       const name = document.getElementById("staff-name").value;
       const vehicle = document.getElementById("vehicle").value;
+      const driverCount = document.getElementById("driver-count-box").value;
+      localStorage.setItem("driverCount", driverCount);
       if (!name.trim()) {
         alert("Staff name is required.");
         return;
       }
-
       const newAssignment = { role, name, vehicle };
       const stored = JSON.parse(localStorage.getItem("ohareAssignments")) || [];
       stored.push(newAssignment);
@@ -206,7 +224,13 @@
       alert("Runway status saved with timestamps.");
     }
 
-    window.onload = function() {
+    function saveDriverCount() {
+  const driverCount = document.getElementById("driver-count-box").value;
+  localStorage.setItem("driverCount", driverCount);
+  loadAssignments();
+}
+
+window.onload = function() {
   loadAssignments();
   loadRunwayStatusInputs();
   displayRunwayStatusOnDashboard();
