@@ -123,11 +123,7 @@
         }
       });
     }
-<div class="form-section" style="width: 96%;">
-  <h2 onclick="toggleSection('ordDailyStats')" style="cursor:pointer;">ORD Daily Flight Stats</h2>
-  <div id="ordDailyStats" style="display: block;"></div>
-</div>
-    
+
     window.onload = function() {
   fetch('https://api.weather.gov/stations/KORD/observations/latest')
     .then(response => response.json())
@@ -142,7 +138,6 @@ const visibility = data.properties.visibility.value ? (data.properties.visibilit
 document.getElementById('currentTemp').textContent = `(${fahrenheit}°F, Wind: ${data.properties.windDirection.value}° @ ${windSpeedMph} mph (${windSpeedKts} kts), Vis: ${visibility})`;
       } else {
         document.getElementById('currentTemp').textContent = '(N/A)';
-        loadSimulatedFlightStats();
       }
     })
     .catch(() => {
@@ -168,26 +163,6 @@ document.getElementById('currentTemp').textContent = `(${fahrenheit}°F, Wind: $
     setInterval(updateClock, 1000);
     updateClock();
 
-function loadSimulatedFlightStats() {
-  const statsContainer = document.getElementById("ordDailyStats");
-  const now = new Date();
-
-  const cancellations = Math.floor(Math.random() * 20);
-  const delays = Math.floor(Math.random() * 100);
-  const totalFlights = 1800 + Math.floor(Math.random() * 200);
-  const delayedFlights = delays;
-  const cancelledFlights = cancellations;
-
-  statsContainer.innerHTML = `
-    <p><strong>Date:</strong> ${now.toLocaleDateString()}</p>
-    <p><strong>Average Cancellations:</strong> ${cancellations}</p>
-    <p><strong>Average Delays:</strong> ${delays}</p>
-    <p><strong>Total Flights (24h):</strong> ${totalFlights}</p>
-    <p><strong>Delayed Flights (24h):</strong> ${delayedFlights}</p>
-    <p><strong>Cancelled Flights (24h):</strong> ${cancelledFlights}</p>
-  `;
-}
-    
     function toggleSection(id) {
       const section = document.getElementById(id);
       if (section.style.display === "none") {
